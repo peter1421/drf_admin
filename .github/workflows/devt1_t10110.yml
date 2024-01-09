@@ -47,6 +47,7 @@ jobs:
 
       - name: DB migrate
         run:  python manage.py migrate
+      
         
 
 
@@ -75,4 +76,4 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3107CFFA79CF4307A0D869FB69B933FF }}
       - name: 'Runserver'
-        uses:  python manage.py runserver 0.0.0.0:8769
+        run:  python manage.py runserver 0.0.0.0:8769
