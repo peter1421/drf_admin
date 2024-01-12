@@ -78,3 +78,5 @@ user-agents
 vine
 zipp
 zope.interface
+whitenoise
+```

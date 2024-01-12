@@ -85,6 +85,8 @@ MIDDLEWARE = [
     # 下面两个中间件放置在最后位置, 且两者保证顺序
     'drf_admin.utils.middleware.OperationLogMiddleware',
     'drf_admin.utils.middleware.ResponseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
+
 ]
 
 # CORS跨域设置(3.0版本后需增加http)
@@ -205,6 +207,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
