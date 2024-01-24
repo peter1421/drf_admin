@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db import transaction
 
-from drf_admin.apps.courses.models import Book
-from drf_admin.apps.courses.serializers.books import BooksSerializer
+from courses.models import Book
+from courses.serializers.books import BooksSerializer
 
 class BooksViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, GenericAPIView):    
     """

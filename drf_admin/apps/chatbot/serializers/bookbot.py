@@ -3,7 +3,7 @@ from rest_framework import serializers
 from chatbot.models import StudentBookBot
 from courses.serializers.books import BooksSerializer
 from system.serializers.users import UsersSerializer
-from drf_admin.apps.courses.models import Book
+from courses.models import Book
 from oauth.models import Users
 
 class StudentBookBotSerializer(serializers.ModelSerializer):

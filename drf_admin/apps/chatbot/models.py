@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
 from django.utils.timezone import now
-from drf_admin.apps.courses.models import Book
+from courses.models import Book
 
 from oauth.models import Users
 class StudentBookBot(models.Model):

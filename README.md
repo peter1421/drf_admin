@@ -1,3 +1,13 @@
+# DILAB 聊書系統
+|     |   後端程式碼  |   前端程式碼  |
+|---  |--- | --- |
+|  github   |  https://github.com/peter1421/drf_admin   |  https://github.com/peter1421/fe_admin   |
+
+## 專案啟動
+* [專案啟動文檔](https://github.com/peter1421/drf_admin/blob/master/doc/run_drf.md)
+## 工作教學
+* [工作教學(待補)]()
+
 # DRF-ADMIN 後台管理系統
 
 <p align="center">

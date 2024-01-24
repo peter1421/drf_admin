@@ -1,10 +1,6 @@
-import re
-
-from django.conf import settings
-from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from drf_admin.apps.courses.models import Book
+from courses.models import Book
 
 # Users = get_user_model()
 
