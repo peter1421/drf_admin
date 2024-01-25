@@ -9,10 +9,12 @@
 from urllib.parse import parse_qs
 
 from django.db import close_old_connections
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+# from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from rest_framework_simplejwt.settings import api_settings
 
-
-class WebSocketTokenAuthentication(JSONWebTokenAuthentication):
+class WebSocketTokenAuthentication(JWTAuthentication):
     """
     重写token获取方式
     """
