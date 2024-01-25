@@ -31,7 +31,9 @@ jobs:
         run: pip install -r requirements_ci.txt
   
       - name: Database migrations
-        run: python manage.py migrate
+        run: /
+          python manage.py makemigrations
+          python manage.py migrate
   
       - name: Run tests
         run: pytest
