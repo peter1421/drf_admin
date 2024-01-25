@@ -7,7 +7,7 @@ name: Build and deploy Python app to Azure Web App - 0112Tester02
 on:
   push:
     branches:
-      - ci部屬
+      - ci部屬-book_chatbot
   workflow_dispatch:
 
 jobs:
