@@ -130,3 +130,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+# 忽略所有 __init__.py 文件
+**/__init__.py

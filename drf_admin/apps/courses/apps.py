@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class BookChatbotConfig(AppConfig):
-    name = 'book_chatbot'
+class CoursesConfig(AppConfig):
+    name = 'courses'
