@@ -1,4 +1,6 @@
-from .settings import *  # 导入所有默认设置
+import os
+from drf_admin.settings import *
+from drf_admin.settings.dev import BASE_DIR, INSTALLED_APPS  # 导入所有默认设置
 
 # 设置测试使用的数据库
 DATABASES = {
