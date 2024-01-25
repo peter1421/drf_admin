@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     'monitor',
     'cmdb',
     'information',
-    'chatbot',
+    'book_chatbot',
     'courses',
     # 'drf_admin.apps.courses',
 ]
@@ -238,7 +238,8 @@ JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),  # Token有效时间
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),  # Token刷新有效时间
     'JWT_ALLOW_REFRESH': True,  # 允许刷新Token
-    'JWT_AUTH_HEADER_PREFIX': 'Bearer',  # 定义Token携带头信息, Authorization: Bearer ...
+    # 定义Token携带头信息, Authorization: Bearer ...
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 }
 
 AUTHENTICATION_BACKENDS = [
@@ -247,7 +248,8 @@ AUTHENTICATION_BACKENDS = [
 
 DEFAULT_PWD = os.getenv('DEFAULT_PWD', '123456')  # 创建用户默认密码
 BASE_API = 'api/'  # 项目BASE API, 如设置时必须以/结尾
-WHITE_LIST = [f'/{BASE_API}oauth/login/', f'/{BASE_API}oauth/info/', f'/{BASE_API}swagger/.*']  # 权限认证白名单
+WHITE_LIST = [f'/{BASE_API}oauth/login/',
+              f'/{BASE_API}oauth/info/', f'/{BASE_API}swagger/.*']  # 权限认证白名单
 REGEX_URL = '^{url}$'  # 权限匹配时,严格正则url
 PROJECT_START_TIME = psutil.Process().create_time()
 

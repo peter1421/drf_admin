@@ -4,9 +4,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db import transaction
 
-from chatbot.backend import get_gpt_response
-from chatbot.models import ChatMessage
-from chatbot.serializers.centre import ChatMessageSerializer  # 導入 Response
+from book_chatbot.backend import get_gpt_response
+from book_chatbot.models import ChatMessage
+from book_chatbot.serializers.centre import ChatMessageSerializer  # 導入 Response
+
 
 def save_chat_message(data):
     serializer = ChatMessageSerializer(data=data)
@@ -16,12 +17,14 @@ def save_chat_message(data):
     else:
         raise ValueError(serializer.errors)
 
+
 class ChatMessageUpdateAPIView(mixins.UpdateModelMixin, GenericAPIView):
     """
     更新聊天訊息
     - status: 200(成功)
     - return: 修改聊天訊息
     """
+
     def put(self, request, *args, **kwargs):
         bot_id = request.data.get('bot_id')
         chatroom_id = request.data.get('chatroom_id')
@@ -56,16 +59,15 @@ class ChatMessageUpdateAPIView(mixins.UpdateModelMixin, GenericAPIView):
         except ValueError as e:
             return Response(e.args[0], status=status.HTTP_400_BAD_REQUEST)
 
-
     def get_object(self):
         # 根据您的需求获取 ChatMessage 对象
         # 例如，可以使用 URL 中的 ID 来查找特定消息
         message_id = self.kwargs.get('id')
         return ChatMessage.objects.get(message_id=message_id)
-    
+
 
 class GetMessageAPIView(mixins.UpdateModelMixin, GenericAPIView):
-    #TODO: get message from database
+    # TODO: get message from database
     """
     根據 bot_id 和 chatroom_id 從數據庫檢索訊息。
     - status: 200(成功)
@@ -76,9 +78,9 @@ class GetMessageAPIView(mixins.UpdateModelMixin, GenericAPIView):
         # 從請求中檢索 bot_id 和 chatroom_id。
         # 在這裡，我假設這些作為查詢參數發送。
         # bot_id = request.query_params.get('bot_id')
-        bot_id='0'
+        bot_id = '0'
         # # chatroom_id = request.query_params.get('chatroom_id')
-        chatroom_id ='0'
+        chatroom_id = '0'
         if not bot_id or not chatroom_id:
             return Response({"error": "缺少 bot_id 或 chatroom_id"}, status=400)
 
@@ -97,9 +99,6 @@ class GetMessageAPIView(mixins.UpdateModelMixin, GenericAPIView):
             for message in messages
         ]
         return Response(formatted_messages)
-
-
-
 
     def get_object(self):
         return self.request.user

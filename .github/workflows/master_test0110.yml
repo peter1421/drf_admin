@@ -1,3 +1,7 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+# More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
+
 name: Build and deploy Python app to Azure Web App - 0112Tester02
 
 on:
@@ -8,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -21,7 +25,7 @@ jobs:
       - name: Create and start virtual environment
         run: |
           python -m venv venv
-          .\venv\Scripts\activate
+          source venv/bin/activate
       
       - name: Install dependencies
         run: pip install -r requirements_ci.txt
@@ -31,7 +35,7 @@ jobs:
         run: python manage.py test  
         
       - name: Zip artifact for deployment
-        run: Compress-Archive -Path * -DestinationPath release.zip -Recurse
+        run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
@@ -42,7 +46,7 @@ jobs:
             !venv/
 
   deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build
     environment:
       name: 'Production'
@@ -55,8 +59,12 @@ jobs:
           name: python-app
 
       - name: Unzip artifact for deployment
-        run: Expand-Archive release.zip -DestinationPath . 
+        run: unzip release.zip
 
+
+      # - name: Run tests
+      #   run: python manage.py test  
+      
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
