@@ -220,27 +220,25 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'drf_admin.utils.exceptions.exception_handler',
     # 全局分页
     'DEFAULT_PAGINATION_CLASS': 'drf_admin.utils.pagination.GlobalPagination',
-    'DEFAULT_PERMISSION_CLASSES':
-        (
-            'rest_framework.permissions.IsAuthenticated',  # 登录验证
-            'drf_admin.utils.permissions.RbacPermission',  # 自定义权限认证
-        ),
-    'DEFAULT_AUTHENTICATION_CLASSES':
-        (
-            'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # DRF-JWT认证
-        ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',  # 登录验证
+        'drf_admin.utils.permissions.RbacPermission',  # 自定义权限认证
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # 更新为 DRF-SimpleJWT 认证
+    ),
     # DRF-API文档
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_THROTTLE_RATES': {'anon': '10/min', }
 }
 
-JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),  # Token有效时间
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),  # Token刷新有效时间
-    'JWT_ALLOW_REFRESH': True,  # 允许刷新Token
-    # 定义Token携带头信息, Authorization: Bearer ...
-    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
-}
+# JWT_AUTH = {
+#     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),  # Token有效时间
+#     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),  # Token刷新有效时间
+#     'JWT_ALLOW_REFRESH': True,  # 允许刷新Token
+#     # 定义Token携带头信息, Authorization: Bearer ...
+#     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+# }
 
 AUTHENTICATION_BACKENDS = [
     'oauth.utils.UsernameMobileAuthBackend',  # 自定义用户认证方法
@@ -380,4 +378,22 @@ LOGGING = {
             'propagate': True,
         }
     }
+}
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # 访问令牌过期时间
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # 刷新令牌过期时间
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }

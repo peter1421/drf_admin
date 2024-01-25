@@ -28,7 +28,7 @@ django-redis
 django-simpleui
 django-user-agents
 djangorestframework
-djangorestframework-jwt
+djangorestframework-simplejwt
 dnspython
 drf-writable-nested
 drf-yasg
