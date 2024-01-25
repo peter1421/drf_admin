@@ -3,7 +3,6 @@ from django.urls import path
 from chatbot.views import centre
 from chatbot.views.bookbot import StudentBookBotView
 
-# from drf_admin.apps.chatbot import views
 
 urlpatterns = [
     # path('save-message/', views.index, name='index'), 
