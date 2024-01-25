@@ -31,7 +31,9 @@ jobs:
         run: pip install -r requirements_ci.txt
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-
+      - name: Run tests
+        run: python manage.py test  
+        
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
 
@@ -63,8 +65,8 @@ jobs:
       #   run: python manage.py migrate
       #   working-directory: ${{ github.workspace }}
       
-      - name: Run tests
-        run: python manage.py test  
+      # - name: Run tests
+      #   run: python manage.py test  
       
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
