@@ -28,7 +28,7 @@ class BooksViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Upda
         else:
             return self.list(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         """
         POST 方法用於創建新的書籍記錄
         - 接收書籍的資料並嘗試進行儲存
