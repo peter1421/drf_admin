@@ -52,6 +52,8 @@ class UserInfoView(APIView):
     当前用户信息, status: 200(成功), return: 用户信息和权限
     """
 
+
+
     def get(self, request):
         user_info = request.user.get_user_info()
 
