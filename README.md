@@ -9,10 +9,12 @@
 |---  |--- | --- |
 |  github   |  https://github.com/peter1421/drf_admin   |  https://github.com/peter1421/fe_admin   |
 
-#### 專案啟動
-* [TODO:委託/領取任務]()
-* https://github.com/peter1421/drf_admin/issues
-* https://github.com/users/peter1421/projects/2
+#### 系統網址
+140開頭的網址，去問lab的專案成員
+
+
+#### 開始工作
+* [委託/領取任務](https://github.com/peter1421/drf_admin/blob/master/doc/start_task.md)
 * [啟動專案教學](https://github.com/peter1421/drf_admin/blob/master/doc/run_drf.md)
 * [TODO:推送程式碼教學]()
 * [TODO:伺服器部屬]()
