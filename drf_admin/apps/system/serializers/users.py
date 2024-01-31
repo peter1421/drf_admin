@@ -26,7 +26,7 @@ class UsersSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Users
-        fields = ['id', 'username', 'name', 'mobile', 'email', 'is_active', 'department', 'department_name',
+        fields = ['id', 'username', 'name', 'mobile', 'email','gender', 'is_active', 'department', 'department_name',
                   'date_joined', 'roles', 'roles_list', 'is_superuser']
 
     def validate(self, attrs):

@@ -52,7 +52,7 @@ class ChangeInformationSerializer(serializers.ModelSerializer):
     """
     个人中心修改个人信息序列化器
     """
-    mobile = serializers.RegexField(r'^1[3-9]\d{9}$', allow_blank=True, error_messages={'invalid': '手机号格式错误'})
+    # mobile = serializers.RegexField(r'^1[3-9]\d{9}$', allow_blank=True, error_messages={'invalid': '手机号格式错误'})
 
     class Meta:
         model = Users
