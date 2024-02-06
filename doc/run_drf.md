@@ -56,17 +56,19 @@
         * ```shell
             python manage.py loaddata init.json(略過)
             ```
+    * 更新本地api配置檔
+      * drf_admin\settings\config.py
+      * 原本沒有這個檔案，要去line群組找檔案
+      * 修改需求指定api跟書籍id
+      * ![](https://i.imgur.com/Tfg8GZG.png)
+      * ![](https://i.imgur.com/ibQUq5J.png)
+      * ![](https://i.imgur.com/Ah6aFe3.png)
     * 啟動Django項目
         * ```shell
             python manage.py runserver 0.0.0.0:8769
             ```
     * 接口文檔Swagger
         * http://127.0.0.1:8769/api/swagger/
-    * 如果聊天功能出現接口錯誤，去重開一個api，並更改
-        ```shell
-            drf_admin\apps\chatbot\backend.py
-            openai.api_key = "TOKEN"  # 替换为您的 OpenAI API 密钥
-            ```
 
 ### 前端運行
 1. 版本說明
