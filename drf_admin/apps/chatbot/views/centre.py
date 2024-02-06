@@ -5,8 +5,8 @@ from rest_framework import status
 from django.db import transaction
 
 
-from chatbot.backend import  get_gpt_response
-from chatbot.models import ChatMessage, StudentBookBot
+from chatbot.backend import  get_response
+from chatbot.models import ChatMessage
 from chatbot.serializers.centre import ChatMessageSerializer  # 導入 Response
 
 def save_chat_message(data):
@@ -31,8 +31,7 @@ class ChatMessageUpdateAPIView(mixins.UpdateModelMixin, GenericAPIView):
         sender = request.data.get('sender')
         message = request.data.get('message')
         tag = '測試'
-        print('student_book_bot_id',student_book_bot_id)
-        # todo selializer = ChatMessageSerializer(data=request.data)
+        # TODO: selializer = ChatMessageSerializer(data=request.data)
         user_data = {
             'bot_id': student_book_bot_id,
             'chatroom_id': chatroom_id,
@@ -40,17 +39,21 @@ class ChatMessageUpdateAPIView(mixins.UpdateModelMixin, GenericAPIView):
             'message': message,
             'tag': tag,
         }
-        print('87')
-        print(' get_gpt_response(message)', get_gpt_response(message))
-        print('877')
+        # 創建初始對話
+        # thread = client.beta.threads.create(
+        #     messages=[
+        #         {"role": "user", "content": "魚姐姐，你好! 請你問我跟「怪獸與他們的產地有關」的問題"}
+        #     ]
+        # )
+        # print(thread.id)
+        fake_id='thread_qn9OOHVEoGkK7SvU3nQjlkwb'
         bot_data = {
             'bot_id': student_book_bot_id,
             'chatroom_id': chatroom_id,
             'sender': 'bot',
-            'message': get_gpt_response(message),
+            'message': get_response(message,fake_id,student_book_bot_id ),
             'tag': tag,
         }
-        print('user_data',user_data)
         try:
             with transaction.atomic():
                 # 保存用戶消息
@@ -84,10 +87,8 @@ class GetMessageAPIView(mixins.UpdateModelMixin, GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         # 從請求中檢索 bot_id 和 chatroom_id。
-        # 在這裡，我假設這些作為查詢參數發送。
-        print('request DATA',request.query_params)
+        # print('request DATA',request.query_params)
         bot_id = request.query_params.get('bot_id')
-        # student_book_bot_id=1
         # # chatroom_id = request.query_params.get('chatroom_id')
         chatroom_id ='0'
         if not bot_id or not chatroom_id:

@@ -13,7 +13,7 @@ class StudentBookBotSerializer(serializers.ModelSerializer):
     book = serializers.PrimaryKeyRelatedField(queryset=Book.objects.all())
     class Meta:
         model = StudentBookBot
-        fields = ['bot_id', 'student', 'book']
+        fields = ['bot_id', 'student', 'book','now_chatroom_id']
 
     def create(self, validated_data):
         # 创建 StudentBookBot 实例

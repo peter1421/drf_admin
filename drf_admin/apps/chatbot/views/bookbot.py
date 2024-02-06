@@ -6,6 +6,7 @@ from chatbot.models import StudentBookBot
 from chatbot.serializers.bookbot import StudentBookBotSerializer
 
 class StudentBookBotView(APIView):
+    ## 取得當前的機器人ID
     def get(self, request, format=None):
         try:
             student = request.query_params.get('student')
@@ -15,7 +16,7 @@ class StudentBookBotView(APIView):
             return Response(serializer.data)
         except StudentBookBot.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
+    ## 創建一個新的機器人ID
     def post(self, request, format=None):
         # fake_data = {
         #     'student': 1,
