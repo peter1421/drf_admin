@@ -12,7 +12,7 @@ class StudentBookBot(models.Model):
 
     student = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name='學生')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, verbose_name='書籍')
-
+    now_chatroom_id= models.CharField(max_length=100,blank=True, verbose_name='當前聊天房間')
     class Meta:
         unique_together = ('student', 'book')
         verbose_name = '學生書籍機器人'

@@ -1,49 +1,83 @@
-import openai
+import time
 from django.conf import settings
+from openai._client import OpenAI
+
+from chatbot.models import StudentBookBot
+
 
 # https://platform.openai.com/api-keys
-# openai.api_key = "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"  # 替换为您的 OpenAI API 密钥
-openai.api_key=settings.OPENAI_API_KEY
 
-
-def get_gpt_response(prompt):
-    # 建立ChatCompletion端點的請求
-    temp=''
-    response = openai.ChatCompletion.create(
-        model="ft:gpt-3.5-turbo-0613:personal::8NcRQDt1",
-        messages=[
-            {"role": "system", "content": ""},
-            {"role": "user", "content": temp+prompt},
-        ],
+def continue_conversation(user_input,thread_id,api_key,assistant_id):
+    # 設定 API 密鑰和助理 ID
+    API_KEY=api_key
+    ASSISTANT_ID=assistant_id
+    print("api_key",API_KEY)
+    print("assistant_id",ASSISTANT_ID)
+    client = OpenAI(api_key=API_KEY)
+    # 添加用户的新消息到对话中
+    client.beta.threads.messages.create(
+        thread_id=thread_id,
+        role="user",
+        content=user_input
     )
-    # print(response.choices[0].message)
 
-    return response.choices[0].message["content"]
+    # 創建一個新的運行
+    run = client.beta.threads.runs.create(thread_id=thread_id, assistant_id=ASSISTANT_ID)
 
-# print(get_gpt_response("你好"))
+    # 等待運行完成
+    while run.status != "completed":
+        run = client.beta.threads.runs.retrieve(thread_id=thread_id, run_id=run.id)
+        time.sleep(1)
 
-# # 在您的視圖函數或類中
-# def create_student_book_bot(request):
-#     student_id = request.data.get('student_id')
-#     book_id = request.data.get('book_id')
+    # 獲取最新消息
+    message_response = client.beta.threads.messages.list(thread_id=thread_id)
+    messages = message_response.data
+    latest_message = messages[0].content[0].text.value
     
-#     try:
-#         # 獲取學生和書籍對象
-#         student = Users.objects.get(id=student_id)
-#         book = Book.objects.get(book_id=book_id)
+    # 記錄回應
+    # for message in messages:
+    #     print(message.content[0].text.value)
+
+    # print(f"💬魚姐姐: {latest_message}")
+    return latest_message
+
+def get_book_id(student_book_bot_id):
+    student_book_bot = StudentBookBot.objects.get(bot_id=student_book_bot_id)
+    book_id = student_book_bot.book.book_id
+    return book_id
+
+def find_api_by_id(book_id):
+    # 通过书ID找到书名
+    book_name = settings.BOOK_ID_TO_NAME.get(book_id)
+    if not book_name:
+        return "Book ID not found."
+
+    # 通过书名找到对应的配置
+    book_config = settings.BOOK_CONFIGS.get(book_name)
+    if not book_config:
+        return "Book config not found."
+    return book_config
 
 
-#         # 創建StudentBookBot記錄
-#         student_book_bot = StudentBookBot.objects.create(
-#             student=student,
-#             book=book,
-#             bot_id=uuid.uuid4(),  # 生成新的 bot_id
-#             # 其他字段的初始化
-#             # ...
-#         )
+def get_response(user_input,thread_id,student_book_bot_id):
+    book_id = get_book_id(student_book_bot_id)
+    config = find_api_by_id(book_id)
+    if config:
+        assistant_id = config["ASSISTANT_ID"]
+        api_key = config["API_KEY"]
+        response = continue_conversation(user_input,thread_id,api_key,assistant_id)
+        return response
+    return "No response found"
 
-#         return Response({"student_book_bot_id": student_book_bot.bot_id}, status=status.HTTP_201_CREATED)
-#     except Users.DoesNotExist:
-#         return Response({"error": "無效的學生用戶 ID"}, status=status.HTTP_400_BAD_REQUEST)
-#     except Book.DoesNotExist:
-#         return Response({"error": "無效的書籍 ID"}, status=status.HTTP_400_BAD_REQUEST)
+def creat_chatroom(book):
+    config = find_api_by_id(book.book_id)
+    content=f"魚姐姐，你好! 請你問我跟「{book.name}」的問題"
+    API_KEY=config["API_KEY"]
+    client = OpenAI(api_key=API_KEY)
+    thread = client.beta.threads.create(
+        messages=[
+            {"role": "user", "content":content}
+        ]
+    )
+    print(thread.id)
+    return thread.id
