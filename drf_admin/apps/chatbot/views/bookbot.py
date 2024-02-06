@@ -18,13 +18,6 @@ class StudentBookBotView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
     ## 創建一個新的機器人ID
     def post(self, request, format=None):
-        # fake_data = {
-        #     'student': 1,
-        #     'book': 18,
-        # }
-        # print(fake_data)
-        # serializer = StudentBookBotSerializer(data=fake_data)
-        print(request.data)
         serializer = StudentBookBotSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

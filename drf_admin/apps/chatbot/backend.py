@@ -9,8 +9,6 @@ from chatbot.models import StudentBookBot
 
 def continue_conversation(user_input,thread_id,api_key,assistant_id):
     # 設定 API 密鑰和助理 ID
-    # API_KEY = "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"
-    # ASSISTANT_ID = "asst_WWGWWbt5iReBr3MlkFOh4NqG"
     API_KEY=api_key
     ASSISTANT_ID=assistant_id
     print("api_key",API_KEY)

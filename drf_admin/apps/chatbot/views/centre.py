@@ -19,7 +19,7 @@ def save_chat_message(data):
 
 class ChatMessageUpdateAPIView(mixins.UpdateModelMixin, GenericAPIView):
     """
-    更新聊天訊息
+    更新聊天訊息(寄送訊息)
     - status: 200(成功)
     - return: 修改聊天訊息
     """
@@ -70,7 +70,6 @@ class ChatMessageUpdateAPIView(mixins.UpdateModelMixin, GenericAPIView):
     
 
 class GetMessageAPIView(mixins.UpdateModelMixin, GenericAPIView):
-    #TODO: get message from database
     """
     根據 bot_id 和 chatroom_id 從數據庫檢索訊息。
     - status: 200(成功)
@@ -79,7 +78,6 @@ class GetMessageAPIView(mixins.UpdateModelMixin, GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         # 從請求中檢索 bot_id 和 chatroom_id。
-        # print('request DATA',request.query_params)
         bot_id = request.query_params.get('bot_id')
         bot = StudentBookBot.objects.get(bot_id=bot_id)
         now_chatroom_id = bot.now_chatroom_id
@@ -89,7 +87,7 @@ class GetMessageAPIView(mixins.UpdateModelMixin, GenericAPIView):
         # 查詢 ChatMessage 模型
         messages = ChatMessage.objects.filter(
             bot_id=bot_id, chatroom_id=chatroom_id
-        ).order_by('timestamp')  # 如果需要，按時間戳排序
+        ).order_by('timestamp')  # 按時間戳排序
         # 格式化數據
         formatted_messages = [
             {
