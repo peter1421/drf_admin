@@ -6,7 +6,7 @@ from django.db import transaction
 
 
 from chatbot.backend import  get_response
-from chatbot.models import ChatMessage
+from chatbot.models import ChatMessage, StudentBookBot
 from chatbot.serializers.centre import ChatMessageSerializer  # 導入 Response
 
 def save_chat_message(data):
@@ -26,42 +26,33 @@ class ChatMessageUpdateAPIView(mixins.UpdateModelMixin, GenericAPIView):
     
     def put(self, request, *args, **kwargs):
         print('request.data',request.data)
-        student_book_bot_id = request.data.get('student_book_bot_id')
+        bot_id = request.data.get('student_book_bot_id')
         chatroom_id = request.data.get('chatroom_id')
         sender = request.data.get('sender')
         message = request.data.get('message')
         tag = '測試'
+        bot = StudentBookBot.objects.get(bot_id=bot_id)
+        now_chatroom_id = bot.now_chatroom_id
         # TODO: selializer = ChatMessageSerializer(data=request.data)
         user_data = {
-            'bot_id': student_book_bot_id,
-            'chatroom_id': chatroom_id,
+            'bot_id': bot_id,
+            'chatroom_id': now_chatroom_id,
             'sender': sender,
             'message': message,
             'tag': tag,
         }
-        # 創建初始對話
-        # thread = client.beta.threads.create(
-        #     messages=[
-        #         {"role": "user", "content": "魚姐姐，你好! 請你問我跟「怪獸與他們的產地有關」的問題"}
-        #     ]
-        # )
-        # print(thread.id)
-        fake_id='thread_qn9OOHVEoGkK7SvU3nQjlkwb'
         bot_data = {
-            'bot_id': student_book_bot_id,
+            'bot_id': bot_id,
             'chatroom_id': chatroom_id,
             'sender': 'bot',
-            'message': get_response(message,fake_id,student_book_bot_id ),
+            'message': get_response(message,now_chatroom_id,bot_id ),
             'tag': tag,
         }
         try:
             with transaction.atomic():
-                # 保存用戶消息
+                # 保存用戶消息+機器人回復
                 user_response = save_chat_message(user_data)
-                # 保存機器人回復
                 bot_response = save_chat_message(bot_data)
-                print('user_response',user_response)
-                print('bot_response',bot_response)
                 return Response({
                     'user_message': user_response,
                     'bot_message': bot_response
@@ -73,6 +64,7 @@ class ChatMessageUpdateAPIView(mixins.UpdateModelMixin, GenericAPIView):
     def get_object(self):
         # 根据您的需求获取 ChatMessage 对象
         # 例如，可以使用 URL 中的 ID 来查找特定消息
+        # 更新後不用全部重找，只要找到更新的那個就好
         message_id = self.kwargs.get('id')
         return ChatMessage.objects.get(message_id=message_id)
     
@@ -89,11 +81,11 @@ class GetMessageAPIView(mixins.UpdateModelMixin, GenericAPIView):
         # 從請求中檢索 bot_id 和 chatroom_id。
         # print('request DATA',request.query_params)
         bot_id = request.query_params.get('bot_id')
-        # # chatroom_id = request.query_params.get('chatroom_id')
-        chatroom_id ='0'
+        bot = StudentBookBot.objects.get(bot_id=bot_id)
+        now_chatroom_id = bot.now_chatroom_id
+        chatroom_id =now_chatroom_id
         if not bot_id or not chatroom_id:
             return Response({"error": "缺少 bot_id 或 chatroom_id"}, status=400)
-        print('bot_id',bot_id,'chatroom_id',chatroom_id)
         # 查詢 ChatMessage 模型
         messages = ChatMessage.objects.filter(
             bot_id=bot_id, chatroom_id=chatroom_id
@@ -101,16 +93,13 @@ class GetMessageAPIView(mixins.UpdateModelMixin, GenericAPIView):
         # 格式化數據
         formatted_messages = [
             {
-                'userId': message.id,  # 假設您在這裡想要訊息 ID
+                'userId': message.id, 
                 'sender': message.sender,
                 'message': message.message
             }
             for message in messages
         ]
-        print('formatted_messages',formatted_messages)
         return Response(formatted_messages)
-
-
 
 
     def get_object(self):

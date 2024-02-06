@@ -1,3 +1,4 @@
+from chatbot.backend import creat_chatroom
 from rest_framework import serializers
 
 from chatbot.models import StudentBookBot
@@ -21,7 +22,8 @@ class StudentBookBotSerializer(serializers.ModelSerializer):
         book = BooksSerializer(read_only=True)
         student = validated_data.pop('student', None)
         book = validated_data.pop('book', None)
-        student_book_bot = StudentBookBot.objects.create(student=student, book=book, **validated_data)
+        now_chatroom_id=creat_chatroom(book)
+        student_book_bot = StudentBookBot.objects.create(student=student,book=book,now_chatroom_id=now_chatroom_id)
         return student_book_bot
 
     def to_representation(self, instance):

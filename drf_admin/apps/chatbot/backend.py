@@ -70,3 +70,16 @@ def get_response(user_input,thread_id,student_book_bot_id):
         response = continue_conversation(user_input,thread_id,api_key,assistant_id)
         return response
     return "No response found"
+
+def creat_chatroom(book):
+    config = find_api_by_id(book.book_id)
+    content=f"魚姐姐，你好! 請你問我跟「{book.name}」的問題"
+    API_KEY=config["API_KEY"]
+    client = OpenAI(api_key=API_KEY)
+    thread = client.beta.threads.create(
+        messages=[
+            {"role": "user", "content":content}
+        ]
+    )
+    print(thread.id)
+    return thread.id
