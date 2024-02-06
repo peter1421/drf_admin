@@ -43,7 +43,7 @@ class ChatMessageUpdateAPIView(mixins.UpdateModelMixin, GenericAPIView):
         }
         bot_data = {
             'bot_id': bot_id,
-            'chatroom_id': chatroom_id,
+            'chatroom_id': now_chatroom_id,
             'sender': 'bot',
             'message': get_response(message,now_chatroom_id,bot_id ),
             'tag': tag,
