@@ -4,7 +4,7 @@ from rest_framework import status
 
 from chatbot.models import StudentBookBot
 from chatbot.serializers.bookbot import StudentBookBotSerializer
-from chatbot.backend import creat_chatroom
+from chatbot.backend import create_chatroom
 
 class StudentBookBotView(APIView):
     ## 取得當前的機器人ID
@@ -41,7 +41,7 @@ class StudentBookBotView(APIView):
         book_id = request.data.get('book')
 
         student_book_bot = StudentBookBot.objects.get(student_id=user_id, book_id=book_id)
-        now_chatroom_id = creat_chatroom(student_book_bot.book)
+        now_chatroom_id = create_chatroom(student_book_bot.book)
         request.data['now_chatroom_id'] = now_chatroom_id
         serializer = StudentBookBotSerializer(data=request.data)
         if serializer.is_valid():

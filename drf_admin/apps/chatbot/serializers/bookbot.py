@@ -1,4 +1,4 @@
-from chatbot.backend import creat_chatroom
+from chatbot.backend import create_chatroom
 from rest_framework import serializers
 
 from chatbot.models import StudentBookBot
@@ -28,7 +28,7 @@ class StudentBookBotSerializer(serializers.ModelSerializer):
             student_book_bot.now_chatroom_id=now_chatroom_id
             student_book_bot.save()
         else:
-            now_chatroom_id = creat_chatroom(book)
+            now_chatroom_id = create_chatroom(book)
             student_book_bot = StudentBookBot.objects.create(student=student,book=book, now_chatroom_id=now_chatroom_id)
         return student_book_bot
 

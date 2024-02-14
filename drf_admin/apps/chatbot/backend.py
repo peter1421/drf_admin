@@ -69,7 +69,7 @@ def get_response(user_input,thread_id,student_book_bot_id):
         return response
     return "No response found"
 
-def creat_chatroom(book):
+def create_chatroom(book):
     config = find_api_by_id(book.book_id)
     content=f"魚姐姐，你好! 請你問我跟「{book.name}」的問題"
     API_KEY=config["API_KEY"]
