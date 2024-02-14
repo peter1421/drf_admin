@@ -4,6 +4,7 @@ from rest_framework import status
 
 from chatbot.models import StudentBookBot
 from chatbot.serializers.bookbot import StudentBookBotSerializer
+from chatbot.backend import creat_chatroom
 
 class StudentBookBotView(APIView):
     ## 取得當前的機器人ID
@@ -24,7 +25,7 @@ class StudentBookBotView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, user_id, book_id, format=None):
+    def put_old(self, request, user_id, book_id, format=None):
         try:
             student_book_bot = StudentBookBot.objects.get(student_id=user_id, book_id=book_id)
             serializer = StudentBookBotSerializer(student_book_bot, data=request.data)
@@ -34,3 +35,16 @@ class StudentBookBotView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except StudentBookBot.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def put(self, request):
+        user_id = request.data.get('student')
+        book_id = request.data.get('book')
+
+        student_book_bot = StudentBookBot.objects.get(student_id=user_id, book_id=book_id)
+        now_chatroom_id = creat_chatroom(student_book_bot.book)
+        request.data['now_chatroom_id'] = now_chatroom_id
+        serializer = StudentBookBotSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -14,7 +14,7 @@ class StudentBookBot(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, verbose_name='書籍')
     now_chatroom_id= models.CharField(max_length=100,blank=True, verbose_name='當前聊天房間')
     class Meta:
-        unique_together = ('student', 'book')
+        unique_together = ('student', 'book', 'now_chatroom_id')
         verbose_name = '學生書籍機器人'
 
 

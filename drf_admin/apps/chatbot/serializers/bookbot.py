@@ -22,8 +22,14 @@ class StudentBookBotSerializer(serializers.ModelSerializer):
         book = BooksSerializer(read_only=True)
         student = validated_data.pop('student', None)
         book = validated_data.pop('book', None)
-        now_chatroom_id=creat_chatroom(book)
-        student_book_bot = StudentBookBot.objects.create(student=student,book=book,now_chatroom_id=now_chatroom_id)
+        now_chatroom_id = validated_data.pop('now_chatroom_id', None)
+        if now_chatroom_id is not None:
+            student_book_bot = StudentBookBot.objects.get(student=student,book=book)
+            student_book_bot.now_chatroom_id=now_chatroom_id
+            student_book_bot.save()
+        else:
+            now_chatroom_id = creat_chatroom(book)
+            student_book_bot = StudentBookBot.objects.create(student=student,book=book, now_chatroom_id=now_chatroom_id)
         return student_book_bot
 
     def to_representation(self, instance):
