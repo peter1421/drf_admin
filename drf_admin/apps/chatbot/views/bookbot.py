@@ -19,6 +19,7 @@ class StudentBookBotView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
     ## 創建一個新的機器人ID
     def post(self, request, format=None):
+        request.data['now_chatroom_id'] = 'first'
         serializer = StudentBookBotSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
