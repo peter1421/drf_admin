@@ -60,8 +60,10 @@ class OperationLogMiddleware:
             logger.error(log_info)
         elif response.status_code >= 400:
             logger.warning(log_info)
+            # pass
         else:
             logger.info(log_info)
+            # pass
         return response
 
 
