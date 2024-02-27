@@ -10,9 +10,9 @@
     * [安裝教程](https://blog.csdn.net/qq_34195507/article/details/94558862)
 
 ### 後端運行
-####[操作影片](https://drive.google.com/file/d/1R7ilOs6_h92KCHC8I-FpJSNTmU9JYaYz/view?usp=drive_link)
+[操作影片(舊版的 參考用)](https://drive.google.com/file/d/1R7ilOs6_h92KCHC8I-FpJSNTmU9JYaYz/view?usp=drive_link)
 1. 版本說明
-    * Python 3.9.0(建議使用Python3.x以上版本)
+    * Python 3.9(建議使用Python3.x以上版本)
     * Redis 3.2.100
     * ~~MySQL~~ 待使用
 2. 環境安裝
@@ -30,7 +30,7 @@
         * [drf_admin](https://github.com/peter1421/drf_admin)，在頁面中直接Download ZIP
         * 或使用如下Git命令clone代碼
             ```shell
-            git clone https://github.com/peter1421/drf_admin
+            git clone https://github.com/peter1421/DILab-api.git
             ```
     * 虛擬環境配置(python 3.9.0)
         * ```shell
@@ -81,7 +81,7 @@
         * [fe_admin](https://github.com/peter1421/fe_admin)，在頁面中直接Download ZIP
         * 或使用如下Git命令clone代碼
             ```shell
-            git clone https://github.com/peter1421/fe_admin
+            git clone https://github.com/peter1421/DILab-web.git
             ```
     * 安裝第三方包
         * ```shell
